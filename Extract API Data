@@ -1,0 +1,54 @@
+import requests
+import pandas as pd
+
+url = "http://api.exchangeratesapi.io/v1/latest?base=EUR&access_key=3ae8a41ae8b314fe2c76abee00969ef2"  #Make sure to change ******* to your API key.
+response = requests.get(url)
+response.json()
+
+dataframe = pd.DataFrame(response.json())
+dataframe
+
+#output
+
+      success	timestamp 	base	date	      rates
+AED	  True	  1684704903	EUR 	2023-05-21	3.968728
+AFN	  True	  1684704903	EUR 	2023-05-21	94.391618
+ALL	  True	  1684704903	EUR 	2023-05-21	111.536483
+AMD	  True	  1684704903	EUR 	2023-05-21	417.629554
+ANG 	True	  1684704903	EUR	  2023-05-21	1.942552
+...	...	...	...	...	...
+YER	True	1684704903	EUR	2023-05-21	270.516042
+ZAR	True	1684704903	EUR	2023-05-21	21.001890
+ZMK	True	1684704903	EUR	2023-05-21	9728.188763
+ZMW	True	1684704903	EUR	2023-05-21	20.372134
+ZWL	True	1684704903	EUR	2023-05-21	348.006069
+170 rows × 5 columns
+
+# Drop unnescessary columns
+dataframe.drop(columns=["success", "timestamp", "base", "date"], inplace=True)
+dataframe
+
+
+#output
+
+	   rates
+AED 	3.968728
+AFN 	94.391618
+ALL 	111.536483
+AMD 	417.629554
+ANG 	1.942552
+...	...
+YER	  270.516042
+ZAR	  21.001890
+ZMK	  9728.188763
+ZMW	  20.372134
+ZWL 	348.006069
+170  rows × 1 columns
+
+
+
+# Save the Dataframe
+dataframe.to_csv(r"C:\Users\mcgoe\OneDrive\Desktop\IBM Data Engineer\Python\exchange_rates_1.csv")
+
+
+
