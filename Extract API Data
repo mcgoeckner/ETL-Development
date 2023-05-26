@@ -1,10 +1,14 @@
+#extract data using api and save dataframe as a csv file
+
 import requests
 import pandas as pd
 
-url = "http://api.exchangeratesapi.io/v1/latest?base=EUR&access_key=3ae8a41ae8b314fe2c76abee00969ef2"  #Make sure to change ******* to your API key.
+#call the endpoint
+url = "http://api.exchangeratesapi.io/v1/latest?base=EUR&access_key=3ae8a41ae8b314fe2c76abee00969ef2" 
 response = requests.get(url)
 response.json()
 
+#create dataframe
 dataframe = pd.DataFrame(response.json())
 dataframe
 
