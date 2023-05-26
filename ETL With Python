@@ -1,0 +1,67 @@
+#import all needed libraries
+import glob
+import pandas as pd
+from datetime import datetime
+import requests
+
+#get datasets
+!wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0221EN-SkillsNetwork/labs/module%206/Lab%20-%20Extract%20Transform%20Load/data/bank_market_cap_1.json
+!wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0221EN-SkillsNetwork/labs/module%206/Lab%20-%20Extract%20Transform%20Load/data/bank_market_cap_2.json
+!wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0221EN-SkillsNetwork/labs/module%206/Final%20Assignment/exchange_rates.csv
+
+#create function to extract json file
+def extract_from_json(file_to_process):
+    dataframe = pd.read_json(file_to_process)
+    return dataframe
+
+#define the extract function that finds json file and use columns as shown below
+
+
+columns=['Name','Market Cap (US$ Billion)']
+market_cap_file = 'bank_market_cap_1.json'
+exchange_rate_file = 'exchange_rates.csv'
+load_to_file = 'bank_market_cap_gbp.csv'
+
+def extract(file_name):
+    extracted_data = extract_from_json(file_name)
+    df = pd.DataFrame(extracted_data, columns=columns)
+    
+    return df
+
+#find the exchange rate for the british pound
+rates = pd.read_csv(exchange_rate_file, index_col=0)
+exchange_rate = rates.at['GBP', 'Rates']
+exchange_rate
+
+#output
+0.7323984208000001
+
+#Using exchange_rate and the exchange_rates.csv file find the exchange rate of USD to GBP
+#1.Changes the Market Cap (US$ Billion) column from USD to GBP
+#2.Rounds the Market Cap (US$ Billion)` column to 3 decimal places
+#3.Rename Market Cap (US$ Billion) to Market Cap (GBP$ Billion)
+
+
+def transform(extracted_df, exchange_rate):
+    transformed_df = extracted_df.rename(columns={'Market Cap (US$ Billion)': 'Dollar'})
+    transformed_df['Dollar'] = round(transformed_df.Dollar * exchange_rate, 3)
+    transformed_df = transformed_df.rename(columns={'Dollar': 'Market Cap (GBP$ Billion)'})
+    
+    return transformed_df
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
